@@ -6,7 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-Motor	KEYWORD1
+LXG_Motor	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)

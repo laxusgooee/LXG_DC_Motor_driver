@@ -1,4 +1,4 @@
-#include <Motor.h>
+#include <LXG_DC_Motor_driver.h>
 
 // Define pins
 const int ENABLE_PIN = 9;
@@ -6,7 +6,7 @@ const int FORWARD_PIN = 8;
 const int BACKWARD_PIN = 7;
 
 // Create motor instance
-Motor myMotor;
+LXG_Motor myMotor;
 
 void setup() {
   Serial.begin(9600);
