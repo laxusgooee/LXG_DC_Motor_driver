@@ -1,0 +1,27 @@
+#######################################
+# Syntax Coloring Map For Motor
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Motor	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+attach	KEYWORD2
+toggle	KEYWORD2
+start	KEYWORD2
+forward	KEYWORD2
+reverse	KEYWORD2
+stop	KEYWORD2
+setSpeed	KEYWORD2
+accelerate	KEYWORD2
+brake	KEYWORD2
+currentSpeed	KEYWORD2
+isRunning	KEYWORD2
+isReady	KEYWORD2
+isForward	KEYWORD2
