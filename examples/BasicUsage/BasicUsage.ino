@@ -1,55 +1,52 @@
 #include <LXG_DC_Motor_driver.h>
 
-// Define pins
+// Define motor control pins
 const int ENABLE_PIN = 9;
 const int FORWARD_PIN = 8;
 const int BACKWARD_PIN = 7;
 
-// Create motor instance
+// Create a motor instance
 LXG_Motor myMotor;
 
 void setup() {
   Serial.begin(9600);
-
-  // Attach motor to pins
+  
+  // Attach the motor to its control pins
   myMotor.attach(ENABLE_PIN, FORWARD_PIN, BACKWARD_PIN);
-
-  // Start motor
-  myMotor.start();
+  
+  // Start the engine (enables it but does not move it yet)
+  // Think of this as turning the key in a car
+  myMotor.start(); 
 }
 
 void loop() {
-  myMotor.forward();
-  // Accelerate
-  for (int i = 0; i < 10; i++) {
-    myMotor.accelerate();
+  Serial.println("Shifting to Drive and accelerating...");
+  myMotor.forward(); // Shift to Drive
+  for (int i = 0; i < 5; i++) {
+    myMotor.accelerate(50); // Accelerate
     delay(500);
+    Serial.print("Speed: ");
+    Serial.println(myMotor.speed());
+  }
+  
+  Serial.println("Decelerating...");
+  for (int i = 0; i < 5; i++) {
+    myMotor.decelerate(50); // Decelerate
+    delay(500);
+    Serial.print("Speed: ");
+    Serial.println(myMotor.speed());
   }
 
-  delay(1000);
-
-  // Decelerate
-  for (int i = 0; i < 10; i++) {
-    myMotor.brake();
-    delay(500);
-  }
-
-  delay(1000);
-
-  // Reverse direction
-  myMotor.reverse();
-  myMotor.setSpeed(150);
-
+  Serial.println("Braking...");
+  myMotor.brake(); // Full stop and shift to Park
+  delay(2000);
+  
+  Serial.println("Shifting to Reverse and accelerating...");
+  myMotor.reverse(); // Shift to Reverse
+  myMotor.setSpeed(150); // Set a specific speed
   delay(2000);
 
-  // Stop
-  myMotor.stop();
-
-  delay(2000);
-
-  // Start forward again
-  myMotor.forward();
-  myMotor.setSpeed(200);
-
+  Serial.println("Stopping the engine.");
+  myMotor.stop(); // Turn off the engine
   delay(2000);
 }

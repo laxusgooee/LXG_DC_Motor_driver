@@ -3,6 +3,8 @@
 
 #include "Arduino.h"
 
+enum Gear { PARK, DRIVE, REVERSE };
+
 class LXG_Motor {
 private:
   int ENABLE;
@@ -11,8 +13,7 @@ private:
   int _speed;
   bool _isAttached;
   bool _isStarted;
-  bool _isMoving;
-  bool _movingForward;
+  Gear _gear;
 
 public:
   // Constructor
@@ -24,50 +25,50 @@ public:
   // Attach motor to pins
   void attach(int enablePin, int forwardPin, int backwardPin);
 
-  // Toggle motor on/off
-  void toggle();
-
-  // Start motor with default settings
+  // Start engine (doesn't move the car)
   void start();
 
-  // Start motor with specific speed
-  void start(int initialSpeed);
-
-  // Move motor forward
-  void forward();
-
-  // Move motor backward
-  void reverse();
-
-  // Stop motor
+  // Stop engine (turn off completely)
   void stop();
 
-  // Set motor speed (0-255)
-  void setSpeed(int newSpeed);
+  // Shift to Drive (forward gear)
+  void forward();
 
-  // Accelerate motor
+  // Shift to Reverse
+  void reverse();
+
+  // Press accelerator (increases speed)
   void accelerate(int increment = 25);
 
-  // Decelerate motor
-  void brake(int decrement = 25);
+  // Ease off accelerator (reduces speed gradually)
+  void decelerate(int decrement = 25);
 
-  // get current speed
+  // Apply brake (stops car and shifts to PARK)
+  void brake();
+
+  // Set specific speed (direct control - like cruise control)
+  void setSpeed(int newSpeed);
+
+  // Get current gear
+  Gear currentGear() const;
+
+  // Get current speed
   int speed() const;
 
   // Check if motor is attached
   bool isReady() const;
 
-  // Check if motor is started
+  // Check if engine is running
   bool isRunning() const;
 
-  // Check if motor is moving in any direction
-  bool isMoving() const;
+  // Check if driving forward
+  bool isDriving() const;
 
-  // Check if motor is moving forward
-  bool isMovingForward() const;
-
-  // Check if motor is moving backwards
+  // Check if reversing
   bool isReversing() const;
+
+  // Check if in park
+  bool isParked() const;
 };
 
 #endif

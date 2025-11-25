@@ -1,12 +1,13 @@
 # LXG_DC_Motor_driver
 
-A simple and efficient Arduino library to control DC motors using an H-bridge or similar motor driver.
+A simple and efficient Arduino library to control DC motors using an H-bridge or similar motor driver, with a car-like interface.
 
 ## Features
 
-- **Simple Control**: Intuitive methods to start, stop, move forward, and reverse.
-- **Speed Control**: Set speed via PWM, accelerate, and decelerate.
-- **State Tracking**: Easily query the motor's current speed, direction, and running state.
+- **Car-like Interface**: Control your motor like a car, with `start`, `stop`, `forward` (Drive), `reverse`, `accelerate`, `decelerate`, and `brake` commands.
+- **Gear System**: Includes `PARK`, `DRIVE`, and `REVERSE` gears for intuitive control.
+- **Speed Control**: Smoothly accelerate, decelerate, or set a specific speed.
+- **State Tracking**: Easily query the motor's current speed, gear, and running state.
 - **Lightweight**: Minimal memory and processing overhead.
 
 ## Installation
@@ -50,42 +51,40 @@ void setup() {
   // Attach the motor to its control pins
   myMotor.attach(ENABLE_PIN, FORWARD_PIN, BACKWARD_PIN);
   
-  // Start the motor (enables it but does not move it yet)
+  // Start the engine (enables it but does not move it yet)
   // Think of this as turning the key in a car
   myMotor.start(); 
 }
 
 void loop() {
-  Serial.println("Moving forward at full speed...");
-  myMotor.setSpeed(255); // Set to max speed
-  myMotor.forward();
+  Serial.println("Shifting to Drive and accelerating...");
+  myMotor.forward(); // Shift to Drive
+  for (int i = 0; i < 5; i++) {
+    myMotor.accelerate(50); // Accelerate
+    delay(500);
+    Serial.print("Speed: ");
+    Serial.println(myMotor.speed());
+  }
+  
+  Serial.println("Decelerating...");
+  for (int i = 0; i < 5; i++) {
+    myMotor.decelerate(50); // Decelerate
+    delay(500);
+    Serial.print("Speed: ");
+    Serial.println(myMotor.speed());
+  }
+
+  Serial.println("Braking...");
+  myMotor.brake(); // Full stop and shift to Park
   delay(2000);
   
-  Serial.println("Braking...");
-  myMotor.brake(100); // Reduce speed
-  delay(500);
-  Serial.println("Braking...");
-  myMotor.brake(100); // Reduce speed further
-  delay(500);
-  
-  Serial.println("Stopping.");
-  myMotor.stop();
-  delay(2000);
-  
-  Serial.println("Starting and moving in reverse at half speed...");
-  myMotor.start(128); // Start motor at half speed
-  myMotor.reverse();
+  Serial.println("Shifting to Reverse and accelerating...");
+  myMotor.reverse(); // Shift to Reverse
+  myMotor.setSpeed(150); // Set a specific speed
   delay(2000);
 
-  Serial.println("Accelerating...");
-  myMotor.accelerate(50);
-  delay(500);
-  Serial.println("Accelerating...");
-  myMotor.accelerate(50);
-  delay(500);
-
-  Serial.println("Stopping.");
-  myMotor.stop();
+  Serial.println("Stopping the engine.");
+  myMotor.stop(); // Turn off the engine
   delay(2000);
 }
 ```
@@ -101,34 +100,34 @@ void loop() {
 
 ### Core Control
 - `void start()`
-  Enables the motor at full speed (255). Does not cause movement until `forward()` or `reverse()` is called.
-
-- `void start(int initialSpeed)`
-  Enables the motor at a specific speed (0-255).
+  Starts the engine. The motor is in `PARK` gear and does not move.
 
 - `void stop()`
-  Stops all motor activity and disables it. Resets speed to 0.
-
-- `void toggle()`
-  Toggles the motor's state between started and stopped.
+  Stops all motor activity and turns off the engine. Resets speed and gear.
 
 ### Movement
 - `void forward()`
-  Sets the motor's direction to forward. The motor must be started to move.
+  Shifts the gear to `DRIVE`.
 
 - `void reverse()`
-  Sets the motor's direction to backward.
+  Shifts the gear to `REVERSE`.
+
+- `void accelerate(int increment)`
+  Increases the motor's current speed by a given amount.
+
+- `void decelerate(int decrement)`
+  Decreases the motor's current speed by a given amount.
+
+- `void brake()`
+  Brings the motor to a full stop and shifts the gear to `PARK`.
 
 - `void setSpeed(int newSpeed)`
   Sets the motor's speed (0-255).
 
-- `void accelerate(int increment = 25)`
-  Increases the motor's current speed by a given amount.
-
-- `void brake(int decrement = 25)`
-  Decreases the motor's current speed by a given amount. If speed reaches 0, the motor stops.
-
 ### State Queries
+- `Gear currentGear() const`
+  Returns the current gear (`PARK`, `DRIVE`, or `REVERSE`).
+
 - `int speed() const`
   Returns the current speed (0-255).
 
@@ -136,16 +135,16 @@ void loop() {
   Returns `true` if the motor has been attached to pins.
 
 - `bool isRunning() const`
-  Returns `true` if the motor is started (enabled).
+  Returns `true` if the engine is running.
 
-- `bool isMoving() const`
-  Returns `true` if the motor is actively moving forward or backward.
-
-- `bool isMovingForward() const`
-  Returns `true` if the motor is moving forward.
+- `bool isDriving() const`
+  Returns `true` if the motor is in `DRIVE` and moving.
 
 - `bool isReversing() const`
-  Returns `true` if the motor is moving backward.
+  Returns `true` if the motor is in `REVERSE` and moving.
+
+- `bool isParked() const`
+  Returns `true` if the motor is in `PARK`.
 
 ## License
 

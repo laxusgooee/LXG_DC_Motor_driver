@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For Motor
+# Syntax Coloring Map For LXG_Motor
 #######################################
 
 #######################################
@@ -7,21 +7,33 @@
 #######################################
 
 LXG_Motor	KEYWORD1
+Gear	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
 attach	KEYWORD2
-toggle	KEYWORD2
 start	KEYWORD2
+stop	KEYWORD2
 forward	KEYWORD2
 reverse	KEYWORD2
-stop	KEYWORD2
-setSpeed	KEYWORD2
 accelerate	KEYWORD2
+decelerate	KEYWORD2
 brake	KEYWORD2
-currentSpeed	KEYWORD2
-isRunning	KEYWORD2
+setSpeed	KEYWORD2
+currentGear	KEYWORD2
+speed	KEYWORD2
 isReady	KEYWORD2
-isForward	KEYWORD2
+isRunning	KEYWORD2
+isDriving	KEYWORD2
+isReversing	KEYWORD2
+isParked	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+PARK	LITERAL1
+DRIVE	LITERAL1
+REVERSE	LITERAL1
