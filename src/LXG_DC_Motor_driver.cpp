@@ -5,10 +5,7 @@ LXG_Motor::LXG_Motor()
     : speed(0), isAttached(false), isStarted(false), movingForward(true) {}
 
 // Destructor
-LXG_Motor::~LXG_Motor() {
-  stop();
-  Serial.println(F("Motor destroyed"));
-}
+LXG_Motor::~LXG_Motor() { stop(); }
 
 // Attach motor to pins
 void LXG_Motor::attach(int enablePin, int forwardPin, int backwardPin) {
@@ -31,8 +28,6 @@ void LXG_Motor::attach(int enablePin, int forwardPin, int backwardPin) {
   digitalWrite(BACKWARD, LOW);
 
   isAttached = true;
-
-  Serial.println(F("Motor attached successfully"));
 }
 
 // Toggle motor on/off
@@ -58,15 +53,10 @@ void LXG_Motor::start() {
 
   speed = 255;
   isStarted = true;
-  movingForward = true;
 
-  digitalWrite(FORWARD, HIGH);
+  digitalWrite(FORWARD, LOW);
   digitalWrite(BACKWARD, LOW);
   analogWrite(ENABLE, speed);
-
-  Serial.println(F("Motor started"));
-  Serial.print(F("Speed: "));
-  Serial.println(speed);
 }
 
 // Start motor with specific speed
@@ -78,14 +68,10 @@ void LXG_Motor::start(int initialSpeed) {
 
   speed = constrain(initialSpeed, 0, 255);
   isStarted = true;
-  movingForward = true;
 
-  digitalWrite(FORWARD, HIGH);
+  digitalWrite(FORWARD, LOW);
   digitalWrite(BACKWARD, LOW);
   analogWrite(ENABLE, speed);
-
-  Serial.print(F("Motor started at speed: "));
-  Serial.println(speed);
 }
 
 // Move motor forward
@@ -96,16 +82,13 @@ void LXG_Motor::forward() {
   }
 
   if (!isStarted) {
-    start();
+    Serial.println(F("Error: Motor not started. Call start() first."));
     return;
   }
 
   movingForward = true;
   digitalWrite(FORWARD, HIGH);
   digitalWrite(BACKWARD, LOW);
-
-  Serial.print(F("Moving forward at speed: "));
-  Serial.println(speed);
 }
 
 // Move motor backward
@@ -116,15 +99,13 @@ void LXG_Motor::reverse() {
   }
 
   if (!isStarted) {
-    start();
+    Serial.println(F("Error: Motor not started. Call start() first."));
+    return;
   }
 
   movingForward = false;
   digitalWrite(FORWARD, LOW);
   digitalWrite(BACKWARD, HIGH);
-
-  Serial.print(F("Moving backward at speed: "));
-  Serial.println(speed);
 }
 
 // Stop motor
@@ -138,8 +119,6 @@ void LXG_Motor::stop() {
 
   isStarted = false;
   speed = 0; // Reset speed to 0 when stopped
-
-  Serial.println(F("Motor stopped"));
 }
 
 // Set motor speed (0-255)
@@ -153,8 +132,6 @@ void LXG_Motor::setSpeed(int newSpeed) {
 
   if (isStarted) {
     analogWrite(ENABLE, speed);
-    Serial.print(F("Speed set to: "));
-    Serial.println(speed);
   }
 }
 
@@ -165,9 +142,6 @@ void LXG_Motor::accelerate(int increment) {
 
   speed = constrain(speed + increment, 0, 255);
   analogWrite(ENABLE, speed);
-
-  Serial.print(F("Accelerated to: "));
-  Serial.println(speed);
 }
 
 // Decelerate motor
@@ -177,9 +151,6 @@ void LXG_Motor::brake(int decrement) {
 
   speed = constrain(speed - decrement, 0, 255);
   analogWrite(ENABLE, speed);
-
-  Serial.print(F("Braking to: "));
-  Serial.println(speed);
 
   // Auto-stop if speed reaches 0
   if (speed == 0) {
