@@ -19,6 +19,7 @@ void setup() {
 }
 
 void loop() {
+  myMotor.forward();
   // Accelerate
   for (int i = 0; i < 10; i++) {
     myMotor.accelerate();
